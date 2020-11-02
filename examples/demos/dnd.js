@@ -1,27 +1,50 @@
 import React from 'react'
 import events from '../events'
-import BigCalendar from 'react-big-calendar'
+import { Calendar, Views } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
 
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.less'
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
 
-const DragAndDropCalendar = withDragAndDrop(BigCalendar)
+const DragAndDropCalendar = withDragAndDrop(Calendar)
 
 class Dnd extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       events: events,
+      displayDragItemInCell: true,
     }
 
     this.moveEvent = this.moveEvent.bind(this)
     this.newEvent = this.newEvent.bind(this)
   }
 
-  moveEvent({ event, start, end, isAllDay: droppedOnAllDaySlot }) {
+  handleDragStart = event => {
+    this.setState({ draggedEvent: event })
+  }
+
+  dragFromOutsideItem = () => {
+    return this.state.draggedEvent
+  }
+
+  onDropFromOutside = ({ start, end, allDay }) => {
+    const { draggedEvent } = this.state
+
+    const event = {
+      id: draggedEvent.id,
+      title: draggedEvent.title,
+      start,
+      end,
+      allDay: allDay,
+    }
+
+    this.setState({ draggedEvent: null })
+    this.moveEvent({ event, start, end })
+  }
+
+  moveEvent = ({ event, start, end, isAllDay: droppedOnAllDaySlot }) => {
     const { events } = this.state
 
-    const idx = events.indexOf(event)
     let allDay = event.allDay
 
     if (!event.allDay && droppedOnAllDaySlot) {
@@ -30,10 +53,11 @@ class Dnd extends React.Component {
       allDay = false
     }
 
-    const updatedEvent = { ...event, start, end, allDay }
-
-    const nextEvents = [...events]
-    nextEvents.splice(idx, 1, updatedEvent)
+    const nextEvents = events.map(existingEvent => {
+      return existingEvent.id == event.id
+        ? { ...existingEvent, start, end }
+        : existingEvent
+    })
 
     this.setState({
       events: nextEvents,
@@ -54,23 +78,20 @@ class Dnd extends React.Component {
     this.setState({
       events: nextEvents,
     })
-
-    //alert(`${event.title} was resized to ${start}-${end}`)
   }
 
-  newEvent(event) {
-    // let idList = this.state.events.map(a => a.id)
-    // let newId = Math.max(...idList) + 1
-    // let hour = {
-    //   id: newId,
-    //   title: 'New Event',
-    //   allDay: event.slots.length == 1,
-    //   start: event.start,
-    //   end: event.end,
-    // }
-    // this.setState({
-    //   events: this.state.events.concat([hour]),
-    // })
+  newEvent(event) {}
+
+  onSelectEvent(pEvent) {
+    const r = window.confirm('Would you like to remove this event?')
+    if (r === true) {
+      this.setState((prevState, props) => {
+        const events = [...prevState.events]
+        const idx = events.indexOf(pEvent)
+        events.splice(idx, 1)
+        return { events }
+      })
+    }
   }
 
   render() {
@@ -83,8 +104,16 @@ class Dnd extends React.Component {
         resizable
         onEventResize={this.resizeEvent}
         onSelectSlot={this.newEvent}
-        defaultView={BigCalendar.Views.MONTH}
-        defaultDate={new Date(2015, 3, 12)}
+        onDragStart={console.log}
+        defaultView={Views.MONTH}
+        defaultDate={new Date(2020, 10, 10)}
+        popup={true}
+        dragFromOutsideItem={
+          this.state.displayDragItemInCell ? this.dragFromOutsideItem : null
+        }
+        onDropFromOutside={this.onDropFromOutside}
+        handleDragStart={this.handleDragStart}
+        onSelectEvent={event => this.onSelectEvent(event)} //Fires selecting existing event
       />
     )
   }

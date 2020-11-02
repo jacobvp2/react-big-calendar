@@ -9,18 +9,11 @@ let eventsInSlot = (segments, slot) =>
   segments.filter(seg => isSegmentInSlot(seg, slot)).length
 
 class EventEndingRow extends React.Component {
-  static propTypes = {
-    segments: PropTypes.array,
-    slots: PropTypes.number,
-    onShowMore: PropTypes.func,
-    ...EventRowMixin.propTypes,
-  }
-  static defaultProps = {
-    ...EventRowMixin.defaultProps,
-  }
-
   render() {
-    let { segments, slotMetrics: { slots } } = this.props
+    let {
+      segments,
+      slotMetrics: { slots },
+    } = this.props
     let rowSegments = eventLevels(segments).levels[0]
 
     let current = 1,
@@ -100,8 +93,19 @@ class EventEndingRow extends React.Component {
 
   showMore(slot, e) {
     e.preventDefault()
-    this.props.onShowMore(slot)
+    this.props.onShowMore(slot, e.target)
   }
+}
+
+EventEndingRow.propTypes = {
+  segments: PropTypes.array,
+  slots: PropTypes.number,
+  onShowMore: PropTypes.func,
+  ...EventRowMixin.propTypes,
+}
+
+EventEndingRow.defaultProps = {
+  ...EventRowMixin.defaultProps,
 }
 
 export default EventEndingRow

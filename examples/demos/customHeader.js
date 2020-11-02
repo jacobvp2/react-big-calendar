@@ -1,5 +1,5 @@
 import React from 'react'
-import BigCalendar from 'react-big-calendar'
+import { Calendar } from 'react-big-calendar'
 import events from '../events'
 
 let MyOtherNestedComponent = () => <div>NESTED COMPONENT</div>
@@ -13,10 +13,10 @@ let MyCustomHeader = ({ label }) => (
 )
 
 let CustomHeader = ({ localizer }) => (
-  <BigCalendar
+  <Calendar
     events={events}
     localizer={localizer}
-    defaultDate={new Date(2015, 3, 1)}
+    defaultDate={new Date(2020, 3, 1)}
     components={{
       day: { header: MyCustomHeader },
       week: { header: MyCustomHeader },

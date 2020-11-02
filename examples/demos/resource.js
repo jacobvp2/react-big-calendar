@@ -1,5 +1,5 @@
 import React from 'react'
-import BigCalendar from 'react-big-calendar'
+import { Calendar, Views } from 'react-big-calendar'
 import ExampleControlSlot from '../ExampleControlSlot'
 
 const events = [
@@ -43,13 +43,13 @@ const resourceMap = [
 
 let Resource = ({ localizer }) => (
   <>
-    <BigCalendar
+    <Calendar
       events={events}
       localizer={localizer}
-      defaultView={BigCalendar.Views.DAY}
+      defaultView={Views.DAY}
       views={['day', 'work_week']}
       step={60}
-      defaultDate={new Date(2018, 0, 29)}
+      defaultDate={new Date(2020, 0, 29)}
       resources={resourceMap}
       resourceIdAccessor="resourceId"
       resourceTitleAccessor="resourceTitle"

@@ -1,20 +1,14 @@
 import PropTypes from 'prop-types'
 import React from 'react'
-import cn from 'classnames'
+import clsx from 'clsx'
 import { navigate } from './utils/constants'
 
 class Toolbar extends React.Component {
-  static propTypes = {
-    view: PropTypes.string.isRequired,
-    views: PropTypes.arrayOf(PropTypes.string).isRequired,
-    label: PropTypes.node.isRequired,
-    localizer: PropTypes.object,
-    onNavigate: PropTypes.func.isRequired,
-    onView: PropTypes.func.isRequired,
-  }
-
   render() {
-    let { localizer: { messages }, label } = this.props
+    let {
+      localizer: { messages },
+      label,
+    } = this.props
 
     return (
       <div className="rbc-toolbar">
@@ -63,7 +57,7 @@ class Toolbar extends React.Component {
         <button
           type="button"
           key={name}
-          className={cn({ 'rbc-active': view === name })}
+          className={clsx({ 'rbc-active': view === name })}
           onClick={this.view.bind(null, name)}
         >
           {messages[name]}
@@ -71,6 +65,15 @@ class Toolbar extends React.Component {
       ))
     }
   }
+}
+
+Toolbar.propTypes = {
+  view: PropTypes.string.isRequired,
+  views: PropTypes.arrayOf(PropTypes.string).isRequired,
+  label: PropTypes.node.isRequired,
+  localizer: PropTypes.object,
+  onNavigate: PropTypes.func.isRequired,
+  onView: PropTypes.func.isRequired,
 }
 
 export default Toolbar

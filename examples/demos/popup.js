@@ -1,5 +1,5 @@
 import React from 'react'
-import BigCalendar from 'react-big-calendar'
+import { Calendar } from 'react-big-calendar'
 import events from '../events'
 import ExampleControlSlot from '../ExampleControlSlot'
 
@@ -11,11 +11,11 @@ let Popup = ({ localizer }) => (
         days events to see an inline popup of all the events.
       </strong>
     </ExampleControlSlot.Entry>
-    <BigCalendar
+    <Calendar
       popup
       events={events}
       localizer={localizer}
-      defaultDate={new Date(2015, 3, 1)}
+      defaultDate={new Date(2020, 3, 1)}
     />
   </React.Fragment>
 )
