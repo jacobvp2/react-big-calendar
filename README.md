@@ -123,7 +123,3 @@ Big Calendar to match your application styling. For this reason, SASS files are 
 SASS implementation provides a `variables` file containing color and sizing variables that you can
 update to fit your application. _Note:_ Changing and/or overriding styles can cause rendering issues with your
 Big Calendar. Carefully test each change accordingly.
-
-## Join us on Reactiflux Discord
-
-Join us on [Reactiflux Discord](https://discord.gg/PPgj6tb) community under the channel #libraries if you have any questions.
